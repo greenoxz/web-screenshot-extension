@@ -56,6 +56,7 @@ async function captureFullPage({ tabId, windowId, title }) {
 
     for (const position of positions) {
       const viewport = await runInTab(tabId, scrollToPosition, [position.x, position.y]);
+      await runInTab(tabId, setPinnedElementsVisible, [position.y === 0]);
       await delay(SCROLL_SETTLE_MS);
 
       const capture = await captureVisibleTabWithThrottle(windowId, lastCaptureAt);
@@ -255,17 +256,43 @@ function getPageMetrics() {
 }
 
 function prepareForCapture() {
+  const pinnedElements = [...document.querySelectorAll("body *")]
+    .filter((element) => {
+      const style = window.getComputedStyle(element);
+
+      return style.position === "fixed" || style.position === "sticky";
+    })
+    .map((element) => {
+      const previousVisibility = element.style.visibility;
+
+      element.dataset.fullPageScreenshotPinned = "true";
+      element.dataset.fullPageScreenshotVisibility = previousVisibility;
+
+      return element;
+    });
+
   window.__fullPageScreenshotState = {
     scrollX: window.scrollX,
     scrollY: window.scrollY,
     htmlScrollBehavior: document.documentElement.style.scrollBehavior,
-    bodyScrollBehavior: document.body?.style.scrollBehavior
+    bodyScrollBehavior: document.body?.style.scrollBehavior,
+    pinnedCount: pinnedElements.length
   };
 
   document.documentElement.style.scrollBehavior = "auto";
   if (document.body) {
     document.body.style.scrollBehavior = "auto";
   }
+}
+
+function setPinnedElementsVisible(isVisible) {
+  document
+    .querySelectorAll("[data-full-page-screenshot-pinned='true']")
+    .forEach((element) => {
+      element.style.visibility = isVisible
+        ? element.dataset.fullPageScreenshotVisibility || ""
+        : "hidden";
+    });
 }
 
 function scrollToPosition(x, y) {
@@ -290,6 +317,14 @@ function restoreAfterCapture() {
   if (document.body) {
     document.body.style.scrollBehavior = state.bodyScrollBehavior || "";
   }
+
+  document
+    .querySelectorAll("[data-full-page-screenshot-pinned='true']")
+    .forEach((element) => {
+      element.style.visibility = element.dataset.fullPageScreenshotVisibility || "";
+      delete element.dataset.fullPageScreenshotPinned;
+      delete element.dataset.fullPageScreenshotVisibility;
+    });
 
   window.scrollTo(state.scrollX, state.scrollY);
   delete window.__fullPageScreenshotState;
