@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Full Page Screenshot</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=crop,screenshot_region">
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup">
+      <header>
+        <h1>Full Page Screenshot</h1>
+        <p>Choose how you want to capture the current page.</p>
+      </header>
+
+      <div class="capture-actions">
+        <button id="fullPageButton" type="button">
+          <span class="material-symbols-outlined button-icon" aria-hidden="true">screenshot_region</span>
+          <span>Full page</span>
+        </button>
+
+        <button id="cropAreaButton" class="secondary" type="button">
+          <span class="material-symbols-outlined button-icon" aria-hidden="true">crop</span>
+          <span>Crop area</span>
+        </button>
+      </div>
+
+      <label class="setting-row" for="saveFormatSelect">
+        <span>Save format</span>
+        <select id="saveFormatSelect">
+          <option value="png">PNG</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+      </label>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </main>
+
+    <script src="popup-v2.js"></script>
+  </body>
+</html>

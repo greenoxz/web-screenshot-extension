@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Full Page Screenshot",
+  "description": "Capture a full-page screenshot of the current tab.",
+  "version": "0.1.0",
+  "action": {
+    "default_title": "Full Page Screenshot",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/screenshot-region.png",
+      "32": "icons/screenshot-region.png",
+      "48": "icons/screenshot-region.png",
+      "128": "icons/screenshot-region.png"
+    }
+  },
+  "icons": {
+    "16": "icons/screenshot-region.png",
+    "32": "icons/screenshot-region.png",
+    "48": "icons/screenshot-region.png",
+    "128": "icons/screenshot-region.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+  },
+  "permissions": [
+    "activeTab",
+    "downloads",
+    "offscreen",
+    "scripting",
+    "tabs"
+  ]
+}
