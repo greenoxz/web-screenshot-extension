@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Full Page Screenshot",
-  "description": "Capture a full-page screenshot of the current tab.",
+  "name": "Full Page Screenshot – Capture & Crop",
+  "description": "Capture full web pages or visible areas, crop screenshots, preview results, and save them as PNG, JPEG, or WebP.",
   "version": "0.1.0",
   "action": {
-    "default_title": "Full Page Screenshot",
+    "default_title": "Full Page Screenshot – Capture & Crop",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/screenshot-region.png",
